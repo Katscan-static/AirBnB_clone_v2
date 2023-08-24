@@ -13,6 +13,7 @@ from os import getenv
 class DBStorage:
     __engine = None
     __session = None
+    classes = {"City": City, "State": State, "Place": Place, "User": User, "Review": Review}
     
     def __init__(self):
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
@@ -25,21 +26,22 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
             
     def all(self, cls=None):
-        from models import classes
-        result = {}
+        objs = {}
+
         if cls:
-            objects = self.__session.query(classes[cls]).all()
-            for obj in objects:
-                key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                result[key] = obj
+            if type(cls) == str:
+                cls = self.classes[cls]
+            for obj in self.__session.query(cls):
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                objs[key] = obj
         else:
             for cls in classes.values():
-                objects = self.__session.query(cls).all()
-                for obj in objects:
-                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    result[key] = obj
-        return result
-    
+                for obj in self.__session.query(cls):
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    objs[key] = obj
+
+        return objs
+
     def new(self, obj):
         self.__session.add(obj)
         
@@ -54,4 +56,3 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
                                                      expire_on_commit=False))()
-
