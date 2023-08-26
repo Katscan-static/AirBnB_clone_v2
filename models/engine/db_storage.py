@@ -30,13 +30,14 @@ class DBStorage:
 
         if cls:
             if type(cls) == str:
-                cls = self.classes[cls]
-            for obj in self.__session.query(cls):
-                key = "{}.{}".format(type(obj).__name__, obj.id)
-                objs[key] = obj
+                cls = self.classes.get(cls)
+                for obj in self.__session.query(cls).all():
+                    print('test')
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    objs[key] = obj
         else:
             for cls in classes.values():
-                for obj in self.__session.query(cls):
+                for obj in self.__session.query(cls).all():
                     key = "{}.{}".format(type(obj).__name__, obj.id)
                     objs[key] = obj
 
