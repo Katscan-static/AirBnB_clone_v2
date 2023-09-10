@@ -57,6 +57,12 @@ def do_deploy(archive_path):
 
 
 def deploy():
+    """
+        deploy including pack
+
+        Return:
+            value if successful or None
+    """
     try:
         archive_name = do_pack()
         value = do_deploy(archive_name)
