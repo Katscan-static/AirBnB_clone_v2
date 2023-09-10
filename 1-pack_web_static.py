@@ -11,6 +11,9 @@ import time
 def do_pack():
     """
     function that packages folder
+
+    Returns:
+        Archive path or None if not successful
     """
     strtime = time.strftime("%Y%m%d%H%M%S")
     try:
