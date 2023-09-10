@@ -7,19 +7,20 @@ if ! dpkg -l | grep -q nginx; then
 fi
 
 sudo mkdir -p /data/web_static/{releases/test,shared}
-echo "<html><head></head><body>Hello, this is a test page.</body></html>" | sudo tee /data/web_static/releases/test/index.html > /dev/null
+echo "<html>
+	<head>
+	</head>
+	<body>
+		Hello, this is a test page.
+	</body>
+</html>" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 if [ -L /data/web_static/current ]; then
     sudo rm /data/web_static/current
 fi
 sudo ln -s /data/web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-nginx_config="/etc/nginx/sites-available/default"
-echo "server {
-    location /hbnb_static/ {
-        alias /data/web_static/current/;
-    }
+addition_hbnb="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n"
+sudo sed -i "\$i\\$addition_hbnb" /etc/nginx/sites-available/default
 
-    # Additional server configuration...
-}" | sudo tee "$nginx_config" > /dev/null
 sudo service nginx restart
 exit 0
