@@ -8,13 +8,15 @@ from fabric.api import *
 import time
 
 
-
 def do_pack():
+    """
+        function that packages folder
+    """
     strtime = time.strftime("%Y%m%d%H%M%S")
     try:
         local("mkdir -p versions")
         file_name = "web_static_{}.tgz".format(strtime)
         local("tar -cvzf versions/{} web_static".format(file_name))
         return("versions/{}".format(file_name))
-    except:
+    except as e:
         return None
