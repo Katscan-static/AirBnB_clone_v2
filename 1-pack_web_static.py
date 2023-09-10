@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    packege all files as tgz
+packege all files as tgz
 """
 
 
@@ -10,7 +10,7 @@ import time
 
 def do_pack():
     """
-        function that packages folder
+    function that packages folder
     """
     strtime = time.strftime("%Y%m%d%H%M%S")
     try:
