@@ -20,7 +20,7 @@ fi
 sudo ln -s /data/web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 addition_hbnb="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n"
-sudo sed -i "\$i\\$addition_hbnb" /etc/nginx/sites-enabled/default
+sudo sed -i "\$\\$addition_hbnb" /etc/nginx/sites-enabled/default
 
 sudo service nginx restart
 exit 0
